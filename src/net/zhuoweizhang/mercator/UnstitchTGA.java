@@ -6,6 +6,7 @@ import java.io.*;
 import java.nio.charset.*;
 import org.json.*;
 import java.util.*;
+import android.content.Context;
 
 public final class UnstitchTGA {
 	private UnstitchTGA(){}
@@ -90,5 +91,22 @@ public final class UnstitchTGA {
 		FileOutputStream fos = new FileOutputStream(output);
 		out.compress(Bitmap.CompressFormat.PNG, 100, fos);
 		fos.close();
+	}
+
+	public static Map<String, String> loadNameMap(InputStream is) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		String curLine;
+		Map<String, String> retval = new HashMap<String, String>();
+		while ((curLine = reader.readLine()) != null) {
+			curLine = curLine.trim();
+			if (curLine.length() < 1 || curLine.charAt(0) == '#') continue;
+			String[] parts = curLine.split(",");
+			if (parts.length != 2) continue;
+			if (retval.containsKey(parts[0]))
+				throw new RuntimeException("Duplicate in name map: " + curLine);
+			retval.put(parts[0], parts[1]);
+		}
+		reader.close();
+		return retval;
 	}
 }

@@ -1,0 +1,43 @@
+# bed
+bed_0,bed_feet_top
+bed_1,bed_feet_end
+bed_2,bed_feet_side
+bed_3,bed_head_top
+bed_4,bed_head_end
+bed_5,bed_head_side
+# oak, spruce, birch, jungle
+log_0,log_oak
+log_1,log_oak_top
+log_2,log_spruce
+log_3,log_spruce_top
+log_4,log_birch
+log_5,log_birch_top
+log_6,log_jungle
+log_7,log_jungle_top
+# TNT
+tnt_0,tnt_side
+tnt_1,tnt_top
+tnt_2,tnt_bottom
+# sandstone
+sandstone_0,sandstone_normal
+sandstone_1,sandstone_carved
+sandstone_2,sandstone_smooth
+sandstone_3,sandstone_top
+sandstone_4,sandstone_bottom
+# wool
+wool_0,wool_colored_white
+wool_1,wool_colored_orange
+wool_2,wool_colored_magenta
+wool_3,wool_colored_light_blue
+wool_4,wool_colored_yellow
+wool_5,wool_colored_lime
+wool_6,wool_colored_pink
+wool_7,wool_colored_gray
+wool_8,wool_colored_light_gray
+wool_9,wool_colored_cyan
+wool_10,wool_colored_purple
+wool_11,wool_colored_blue
+wool_12,wool_colored_brown
+wool_13,wool_colored_green
+wool_14,wool_colored_red
+wool_15,wool_colored_black
