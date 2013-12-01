@@ -329,7 +329,7 @@ public class TGAImage {
         data = ByteBuffer.wrap(tmpData);
     }
 
-    private static void swapBGR(byte[] data, int bWidth, int height, int bpp) {
+    public static void swapBGR(byte[] data, int bWidth, int height, int bpp) {
         byte r,b;
         int k;
         for(int i=0; i<height; ++i) {

@@ -6,7 +6,6 @@ import java.io.*;
 import java.nio.charset.*;
 import org.json.*;
 import java.util.*;
-import android.content.Context;
 
 public final class UnstitchTGA {
 	private UnstitchTGA(){}
@@ -31,7 +30,7 @@ public final class UnstitchTGA {
 		FileInputStream fis = new FileInputStream(inputFile);
 		TGAImage img = TGAImage.read(fis);
 		Bitmap bmp = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.ARGB_8888);
-		bmp.copyPixelsFromBuffer(img.getData());
+		bmp.copyPixelsFromBuffer(img.getData()); //TODO: premultiplied alphas?
 		unstitch(bmp, map, outputDir, nameMap);
 	}
 
@@ -66,7 +65,7 @@ public final class UnstitchTGA {
 
 	}
 
-	private static String getFilename(String blockName, int number, int secondaryLength, Map<String, String> nameMap) {
+	public static String getFilename(String blockName, int number, int secondaryLength, Map<String, String> nameMap) {
 		if (blockName.length() > 2 && blockName.substring(blockName.length() - 2).equals("_x")) {
 			blockName = blockName.substring(0, blockName.length() - 2);
 		}
