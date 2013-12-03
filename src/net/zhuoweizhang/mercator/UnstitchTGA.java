@@ -34,6 +34,13 @@ public final class UnstitchTGA {
 		unstitch(bmp, map, outputDir, nameMap);
 	}
 
+	public static void unstitchPNG(File inputFile, JSONArray map, File outputDir, Map<String, String> nameMap)
+		throws IOException, JSONException {
+		outputDir.mkdirs();
+		Bitmap bmp = BitmapFactory.decodeFile(inputFile.getAbsolutePath());
+		unstitch(bmp, map, outputDir, nameMap);
+	}
+
 	public static void unstitch(Bitmap bmp, JSONArray map, File outputDir, Map<String, String> nameMap) throws IOException, JSONException {
 		int arrayLength = map.length();
 		for (int i = 0; i < arrayLength; i++) {

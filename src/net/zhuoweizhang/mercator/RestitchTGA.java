@@ -46,6 +46,19 @@ public final class RestitchTGA {
 		tgaImage.write(outputFile);
 	}
 
+	/**
+	 * @returns A list of missing files that should've been present in the PNG file
+	 */
+	public static List<String> restitchPNG(File inputDir, JSONArray map, File outputFile, Map<String, String> nameMap)
+		throws IOException, JSONException {
+		List<String> missingFiles = new ArrayList<String>();
+		Bitmap outBmp = restitch(inputDir, map, nameMap, missingFiles);
+		FileOutputStream fos = new FileOutputStream(outputFile);
+		outBmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+		fos.close();
+		return missingFiles;
+	}
+
 	private static void invertBuffer(ByteBuffer buf, int width, int height) {
 		//taken from BlockLauncher's screenshot function
 		byte[] rowBuffer = new byte[width * 4 * 2];
