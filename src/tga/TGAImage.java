@@ -324,7 +324,7 @@ public class TGAImage {
                 swapBGR(tmpData, rawWidth, header.height(), bpp);
             }
         }*/
-        swapBGR(tmpData, rawWidth, header.height(), 4);
+        //swapBGR(tmpData, rawWidth, header.height(), 4);
 
         data = ByteBuffer.wrap(tmpData);
     }

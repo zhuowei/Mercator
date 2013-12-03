@@ -3,6 +3,7 @@ package net.zhuoweizhang.mercator;
 import tga.*;
 import android.graphics.*;
 import java.io.*;
+import java.nio.*;
 import java.nio.charset.*;
 import org.json.*;
 import java.util.*;
@@ -30,7 +31,16 @@ public final class UnstitchTGA {
 		FileInputStream fis = new FileInputStream(inputFile);
 		TGAImage img = TGAImage.read(fis);
 		Bitmap bmp = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.ARGB_8888);
-		bmp.copyPixelsFromBuffer(img.getData()); //TODO: premultiplied alphas?
+		//bmp.copyPixelsFromBuffer(img.getData()); //TODO: premultiplied alphas?
+		int[] outArr = new int[img.getWidth() * img.getHeight()];
+		img.getData().order(ByteOrder.LITTLE_ENDIAN);
+		IntBuffer myIntBuffer = img.getData().asIntBuffer();
+		myIntBuffer.position(0);
+		myIntBuffer.get(outArr);
+		bmp.setPixels(outArr, 0, img.getWidth(), 0, 0, img.getWidth(), img.getHeight());
+		outArr = null;
+		img = null;
+		myIntBuffer = null;
 		unstitch(bmp, map, outputDir, nameMap);
 	}
 
