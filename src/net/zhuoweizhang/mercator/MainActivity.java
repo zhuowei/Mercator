@@ -33,9 +33,11 @@ public class MainActivity extends Activity implements View.OnClickListener
 	public void stitch() {
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
-			RestitchTGA.restitchTGA(new File("/sdcard/winprogress/terrainout"), 
+			List<String> missingFiles = RestitchTGA.restitchTGA(new File("/sdcard/winprogress/terrainout"), 
 				UnstitchTGA.readMap(new File("/sdcard/terrain.meta")),
 				new File("/sdcard/winprogress/terrainstitch"), myNameMap);
+			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n" + 
+				missingFiles.toString()).show();
 		} catch (Exception e) {
 			e.printStackTrace();
 			reportError(e);

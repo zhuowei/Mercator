@@ -17,9 +17,13 @@ public final class RestitchTGA {
 
 	private RestitchTGA() {}
 
-	public static void restitchTGA(File inputDir, JSONArray map, File outputDir, Map<String, String> nameMap)
+	/**
+	 * @returns A list of missing files that should've been present in the TGA file
+	 */
+	public static List<String> restitchTGA(File inputDir, JSONArray map, File outputDir, Map<String, String> nameMap)
 		throws IOException, JSONException {
-		Bitmap outBmp = restitch(inputDir, map, nameMap);
+		List<String> missingFiles = new ArrayList<String>();
+		Bitmap outBmp = restitch(inputDir, map, nameMap, missingFiles);
 		outputDir.mkdirs();
 		writeTGA(outBmp, new File(outputDir, "terrain-atlas.tga"));
 		for (int mipLevel = 0; mipLevel < 4; mipLevel++) {
@@ -28,6 +32,7 @@ public final class RestitchTGA {
 				false);
 			writeTGA(scaledBmp, new File(outputDir, "terrain-atlas_mip" + mipLevel + ".tga"));
 		}
+		return missingFiles;
 	}
 	private static void writeTGA(Bitmap outBmp, File outputFile) throws IOException {
 		ByteBuffer data = ByteBuffer.allocate(outBmp.getWidth() * outBmp.getHeight() * 4);
@@ -61,7 +66,7 @@ public final class RestitchTGA {
 		buf.rewind();
 	}
 
-	public static Bitmap restitch(File inputDir, JSONArray map, Map<String, String> nameMap)
+	public static Bitmap restitch(File inputDir, JSONArray map, Map<String, String> nameMap, List<String> missingFiles)
 		throws IOException, JSONException {
 		Bitmap outBmp = null;
 		int arrayLength = map.length();
@@ -70,7 +75,7 @@ public final class RestitchTGA {
 			if (outBmp == null) {
 				outBmp = makeBmp(iconInfo);
 			}
-			stitchOneItem(inputDir, iconInfo, outBmp, nameMap);
+			stitchOneItem(inputDir, iconInfo, outBmp, nameMap, missingFiles);
 		}
 
 		//if (cachedIconBitmap != null) {
@@ -81,8 +86,8 @@ public final class RestitchTGA {
 		return outBmp;
 	}
 
-	private static void stitchOneItem(File inputDir, JSONObject iconInfo, Bitmap outBmp, Map<String, String> nameMap)
-				throws IOException, JSONException {
+	private static void stitchOneItem(File inputDir, JSONObject iconInfo, Bitmap outBmp, Map<String, String> nameMap,
+		List<String> missingFiles) throws IOException, JSONException {
 		String rawName = iconInfo.getString("name");
 		//String name = nameMap.get(rawName);
 		//if (name == null) name = rawName;
@@ -93,22 +98,29 @@ public final class RestitchTGA {
 
 		String fileName = getFilename(rawName, 0, secondaryLength, nameMap);
 		File inputFile = new File(inputDir, fileName + ".png");
-		stitchOneIcon(inputFile, primaryTextureUV, outBmp);
+		stitchOneIcon(inputFile, primaryTextureUV, outBmp, missingFiles);
 
 		for (int i = 0; i < secondaryLength; i++) {
 			JSONArray secondaryTextureUV = secondaryTextures.getJSONArray(i);
 			fileName = getFilename(rawName, i + 1, secondaryLength, nameMap);
 			inputFile = new File(inputDir, fileName + ".png");
-			stitchOneIcon(inputFile, secondaryTextureUV, outBmp);
+			stitchOneIcon(inputFile, secondaryTextureUV, outBmp, missingFiles);
 		}
 	}
 
-	private static void stitchOneIcon(File inputFile, JSONArray uv, Bitmap outBmp) throws IOException, JSONException {
-		if (!inputFile.exists()) return;
+	private static void stitchOneIcon(File inputFile, JSONArray uv, Bitmap outBmp, List<String> missingFiles)
+		throws IOException, JSONException {
+		if (!inputFile.exists()) {
+			missingFiles.add(inputFile.getName());
+			return;
+		}
 		//BitmapFactory.Options opts = new BitmapFactory.Options();
 		//opts.inBitmap = cachedIconBitmap;
 		Bitmap bmp = BitmapFactory.decodeFile(inputFile.getAbsolutePath());
-		if (bmp == null) return;
+		if (bmp == null) {
+			missingFiles.add(inputFile.getName());
+			return;
+		}
 
 		double x1 = uv.getDouble(0);
 		double y1 = uv.getDouble(1);
@@ -118,8 +130,8 @@ public final class RestitchTGA {
 		double imgHeight = uv.getDouble(5);
 		int sx = (int) (imgWidth * x1 + 0.5);
 		int sy = (int) (imgHeight * y1 + 0.5);
-		int width = bmp.getWidth();
-		int height = bmp.getHeight();
+		int width = (int) (imgWidth * x2 + 0.5) - sx;
+		int height = (int) (imgHeight * y2 + 0.5) - sy;
 
 		int supposedArrayLength = width * height;
 		if (cachedColorsArray == null || cachedColorsArray.length != supposedArrayLength) {
