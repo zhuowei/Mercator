@@ -40,5 +40,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Stitch items-opaque.png"/>
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Takes /sdcard/terrain.png and /sdcard/items.png, outputs to /sdcard/winprogress/legacyout"
+    />
+<Button android:id="@+id/main_unstitch_legacy_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Unstitch old-style textures"/>
 </LinearLayout>
 

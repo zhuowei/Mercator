@@ -12,6 +12,7 @@ public class MainActivity extends Activity implements View.OnClickListener
 
 	private Button stitchButton, unstitchButton;
 	private Button stitchItemsButton, unstitchItemsButton;
+	private Button unstitchLegacyButton;
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -26,6 +27,8 @@ public class MainActivity extends Activity implements View.OnClickListener
 		stitchItemsButton.setOnClickListener(this);
 		unstitchItemsButton = (Button) findViewById(R.id.main_unstitch_items_button);
 		unstitchItemsButton.setOnClickListener(this);
+		unstitchLegacyButton = (Button) findViewById(R.id.main_unstitch_legacy_button);
+		unstitchLegacyButton.setOnClickListener(this);
 	}
 	public void onClick(View v) {
 		if (v == stitchButton) {
@@ -36,6 +39,8 @@ public class MainActivity extends Activity implements View.OnClickListener
 			stitchItems();
 		} else if (v == unstitchItemsButton) {
 			unstitchItems();
+		} else if (v == unstitchLegacyButton) {
+			unstitchLegacy();
 		}
 	}
 
@@ -88,6 +93,25 @@ public class MainActivity extends Activity implements View.OnClickListener
 			reportError(e);
 		}
 	}
+
+	public void unstitchLegacy() {
+		try {
+			List<UnstitchLegacy.LegacyCoord> blocksCoords = UnstitchLegacy.loadLegacyCoord(getResources().openRawResource(
+				R.raw.mojang_unstitcher_blocks));
+			List<UnstitchLegacy.LegacyCoord> itemsCoords = UnstitchLegacy.loadLegacyCoord(getResources().openRawResource(
+				R.raw.mojang_unstitcher_items));
+			File outputFolderTopLevel = new File("/sdcard/winprogress/legacyout");
+			File blocksOutput = new File(outputFolderTopLevel, "blocks");
+			File inputFolder = new File("/sdcard");
+			UnstitchLegacy.unstitchLegacy(new File(inputFolder, "terrain.png"), blocksCoords, blocksOutput);
+			File itemsOutput = new File(outputFolderTopLevel, "items");
+			UnstitchLegacy.unstitchLegacy(new File(inputFolder, "items.png"), itemsCoords, itemsOutput);
+		} catch (Exception e) {
+			e.printStackTrace();
+			reportError(e);
+		}
+	}
+			
 
 	private void reportError(final Throwable t) {
 		this.runOnUiThread(new Runnable() {
