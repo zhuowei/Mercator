@@ -22,7 +22,7 @@ def processImages(mylist, mytexfolder, comptexfolder):
 
 	for i in mylist:
 		if not i in mytexcontents:
-			print("Not found in my tex folder!")
+			print("Not found in my tex folder! " + i)
 			continue
 		if i in comptexcontents:
 			print("this is already there")

@@ -64,7 +64,7 @@ wool_4,wool_colored_yellow
 wool_5,wool_colored_lime
 wool_6,wool_colored_pink
 wool_7,wool_colored_gray
-wool_8,wool_colored_light_gray
+wool_8,wool_colored_silver
 wool_9,wool_colored_cyan
 wool_10,wool_colored_purple
 wool_11,wool_colored_blue
@@ -73,6 +73,51 @@ wool_13,wool_colored_green
 wool_14,wool_colored_red
 wool_15,wool_colored_black
 
+# These are machine generated (which means there will be mistakes)
+planks_0,planks_oak
+planks_1,planks_spruce
+planks_2,planks_birch
+planks_3,planks_jungle
+stone_slab_0,stone_slab_top
+stone_slab_1,stone_slab_side
+sapling_0,sapling_oak
+sapling_1,sapling_birch
+sapling_2,sapling_spruce
+sapling_3,sapling_jungle
+tallgrass_0,tallgrass
+tallgrass_1,deadbush
+tallgrass_2,fern
+# Tall grass 3 and 4 are missing, will do by hand
+leaves_0,leaves_birch
+leaves_1,leaves_birch
+leaves_2,leaves_spruce
+leaves_3,leaves_jungle
+# 4, 5, 6, 7 are broken
+leaves_opaque_0,leaves_birch_opaque
+leaves_opaque_1,leaves_birch_opaque
+leaves_opaque_2,leaves_spruce_opaque
+leaves_opaque_3,leaves_jungle_opaque
+cactus_0,cactus_top
+cactus_1,cactus_side
+cactus_2,cactus_bottom
+door_0,door_wood_lower
+door_1,door_wood_upper
+door_2,door_iron_lower
+door_3,door_iron_upper
+farmland_0,farmland_wet
+farmland_1,farmland_dry
+pumpkin_0,pumpkin_top
+pumpkin_1,pumpkin_side
+pumpkin_2,pumpkin_face_off
+pumpkin_3,pumpkin_face_on
+melon_0,melon_side
+melon_1,melon_top
+melon_stem_0,melon_stem_disconnected
+melon_stem_1,melon_stem_connected
+pumpkin_stem_0,melon_stem_disconnected
+pumpkin_stem_1,melon_stem_connected
+hayblock_0,hay_block_top
+hayblock_1,hay_block_side
 
 ## Items
 # These are machine generated (which means there will be mistakes)
