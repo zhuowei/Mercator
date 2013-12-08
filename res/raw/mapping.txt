@@ -1,3 +1,32 @@
+# Mapping of PE-styled names to Desktop-styled names
+# format: pe_name,desktop_name
+# grass
+grass_0,grass_top
+grass_1,grass_side
+grass_2,grass_side_snowed
+grass_3,grass_colored
+# stone bricks
+stonebrick_0,stonebrick
+stonebrick_1,stonebrick_mossy
+stonebrick_2,stonebrick_cracked
+stonebrick_3,stonebrick_carved
+# crafting table
+crafting_table_0,crafting_table_top
+crafting_table_1,crafting_table_side
+crafting_table_2,crafting_table_front
+# quartz
+quartz_block_0,quartz_block_bottom
+quartz_block_1,quartz_block_top
+quartz_block_2,quartz_block_side
+quartz_block_3,quartz_block_lines
+quartz_block_4,quartz_block_lines_top
+quartz_block_5,quartz_block_chiseled
+quartz_block_6,quartz_block_chiseled_top
+# furnace
+furnace_0,furnace_front_off
+furnace_1,furnace_front_on
+furnace_2,furnace_side
+furnace_3,furnace_top
 # bed
 bed_0,bed_feet_top
 bed_1,bed_feet_end
