@@ -1,5 +1,7 @@
 # Mapping of PE-styled names to Desktop-styled names
 # format: pe_name,desktop_name
+## Blocks
+# These are done by hand (less confusion)
 # grass
 grass_0,grass_top
 grass_1,grass_side
@@ -70,3 +72,74 @@ wool_12,wool_colored_brown
 wool_13,wool_colored_green
 wool_14,wool_colored_red
 wool_15,wool_colored_black
+
+
+## Items
+# These are machine generated (which means there will be mistakes)
+axe_0,wood_axe
+axe_1,stone_axe
+axe_2,iron_axe
+axe_3,gold_axe
+axe_4,diamond_axe
+boots_0,leather_boots_overlay
+boots_1,chainmail_boots
+boots_2,iron_boots
+boots_3,gold_boots
+boots_4,diamond_boots
+bucket_0,bucket_empty
+bucket_1,bucket_milk
+bucket_2,bucket_water
+bucket_3,bucket_lava
+chestplate_0,leather_chestplate_overlay
+chestplate_1,chainmail_chestplate
+chestplate_2,iron_chestplate
+chestplate_3,gold_chestplate
+chestplate_4,diamond_chestplate
+dye_powder_0,dye_powder_black
+dye_powder_1,dye_powder_red
+dye_powder_2,dye_powder_green
+dye_powder_3,dye_powder_brown
+dye_powder_4,dye_powder_blue
+dye_powder_5,dye_powder_purple
+dye_powder_6,dye_powder_cyan
+dye_powder_7,dye_powder_silver
+dye_powder_8,dye_powder_gray
+dye_powder_9,dye_powder_pink
+dye_powder_10,dye_powder_lime
+dye_powder_11,dye_powder_yellow
+dye_powder_12,dye_powder_light_blue
+dye_powder_13,dye_powder_magenta
+dye_powder_14,dye_powder_orange
+dye_powder_15,dye_powder_white
+helmet_0,leather_helmet_overlay
+helmet_1,chainmail_helmet
+helmet_2,iron_helmet
+helmet_3,gold_helmet
+helmet_4,diamond_helmet
+hoe_0,wood_hoe
+hoe_1,stone_hoe
+hoe_2,iron_hoe
+hoe_3,gold_hoe
+hoe_4,diamond_hoe
+leggings_0,leather_leggings_overlay
+leggings_1,chainmail_leggings
+leggings_2,iron_leggings
+leggings_3,gold_leggings
+leggings_4,diamond_leggings
+pickaxe_0,wood_pickaxe
+pickaxe_1,stone_pickaxe
+pickaxe_2,iron_pickaxe
+pickaxe_3,gold_pickaxe
+pickaxe_4,diamond_pickaxe
+shovel_0,wood_shovel
+shovel_1,stone_shovel
+shovel_2,iron_shovel
+shovel_3,gold_shovel
+shovel_4,diamond_shovel
+sword_0,wood_sword
+sword_1,stone_sword
+sword_2,iron_sword
+sword_3,gold_sword
+sword_4,diamond_sword
+clock_item,clock
+compass_item,compass

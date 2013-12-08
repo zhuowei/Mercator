@@ -52,6 +52,9 @@ public class MainActivity extends Activity implements View.OnClickListener
 				new File("/sdcard/winprogress/terrainstitch"), myNameMap);
 			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n"
 				+ missingFiles.toString()).show();
+			PrintWriter pw = new PrintWriter(new File("/sdcard/winprogress/terrain_rem.txt"));
+			pw.println(missingFiles.toString());
+			pw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			reportError(e);
@@ -77,6 +80,9 @@ public class MainActivity extends Activity implements View.OnClickListener
 				new File("/sdcard/winprogress/items-opaque.png"), myNameMap);
 			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n"
 				+ missingFiles.toString()).show();
+			PrintWriter pw = new PrintWriter(new File("/sdcard/winprogress/items_rem.txt"));
+			pw.println(missingFiles.toString());
+			pw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			reportError(e);
