@@ -20,6 +20,19 @@ public final class UnstitchTGA {
 		JSONArray map = new JSONArray(inputStr);
 		return map;
 	}
+
+	public static JSONArray readMap(InputStream is) throws IOException, JSONException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		StringBuilder myStrBuilder = new StringBuilder();
+		String curLine;
+		while ((curLine = reader.readLine()) != null) {
+			myStrBuilder.append(curLine);
+		}
+		reader.close();
+		JSONArray map = new JSONArray(myStrBuilder.toString());
+		return map;
+	}
+
 	public static void unstitchTGA(File inputFile, File mapFile, File outputDir, Map<String, String> nameMap)
 		throws IOException, JSONException {
 		JSONArray map = readMap(mapFile);

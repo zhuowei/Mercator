@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     >
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Takes /sdcard/terrain-atlas.tga and /sdcard/terrain.meta, outputs to /sdcard/winprogress/terrainout/"
+    android:text="Takes /sdcard/Mercator/input/terrain.png and /sdcard/Mercator/input/items.png, outputs to /sdcard/Mercator/unstitch"
     />
-<Button android:id="@+id/main_unstitch_button"
+<Button android:id="@+id/main_unstitch_legacy_button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Unstitch terrain-atlas.tga"/>
+    android:text="Unstitch old-style textures"/>
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Takes /sdcard/winprogress/terrainout and /sdcard/terrain.meta, outputs to /sdcard/winprogress/terrainstitch/"
+    android:text="Takes /sdcard/Mercator/unstitch/blocks, outputs to /sdcard/Mercator/output/terrain-atlas.tga"
     />
 <Button android:id="@+id/main_stitch_button"
     android:layout_width="match_parent"
@@ -25,16 +28,16 @@
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Takes /sdcard/items-opaque.png and /sdcard/items.meta, outputs to /sdcard/winprogress/itemsout/"
+    android:text="Takes /sdcard/Mercator/input/terrain-atlas.tga, output to /sdcard/Mercator/unstitch/blocks"
     />
-<Button android:id="@+id/main_unstitch_items_button"
+<Button android:id="@+id/main_unstitch_button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Unstitch items-opaque.png"/>
+    android:text="Unstitch terrain-atlas.tga"/>
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Takes /sdcard/winprogress/itemsout and /sdcard/items.meta, outputs to /sdcard/winprogress/items-opaque.png"
+    android:text="Takes /sdcard/Mercator/unstitch/items, outputs to /sdcard/Mercator/output/items-opaque.png"
     />
 <Button android:id="@+id/main_stitch_items_button"
     android:layout_width="match_parent"
@@ -43,11 +46,13 @@
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Takes /sdcard/terrain.png and /sdcard/items.png, outputs to /sdcard/winprogress/legacyout"
+    android:text="Takes /sdcard/Mercator/input/items-opaque.png, output to /sdcard/Mercator/unstitch/items"
     />
-<Button android:id="@+id/main_unstitch_legacy_button"
+<Button android:id="@+id/main_unstitch_items_button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Unstitch old-style textures"/>
+    android:text="Unstitch items-opaque.png"/>
+
 </LinearLayout>
+</ScrollView>
 

@@ -3,6 +3,7 @@ package net.zhuoweizhang.mercator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Environment;
 import java.io.*;
 import java.util.*;
 import android.view.View;
@@ -44,12 +45,16 @@ public class MainActivity extends Activity implements View.OnClickListener
 		}
 	}
 
+	public File getWorkingFolder() {
+		return new File(Environment.getExternalStorageDirectory(), "Mercator");
+	}
+
 	public void stitch() {
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
-			List<String> missingFiles = RestitchTGA.restitchTGA(new File("/sdcard/winprogress/terrainout"), 
-				UnstitchTGA.readMap(new File("/sdcard/terrain.meta")),
-				new File("/sdcard/winprogress/terrainstitch"), myNameMap);
+			List<String> missingFiles = RestitchTGA.restitchTGA(new File(getWorkingFolder(), "unstitch/blocks"), 
+				UnstitchTGA.readMap(getResources().openRawResource(R.raw.mojang_terrain)),
+				new File(getWorkingFolder(), "output"), myNameMap);
 			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n"
 				+ missingFiles.toString()).show();
 			PrintWriter pw = new PrintWriter(new File("/sdcard/winprogress/terrain_rem.txt"));
@@ -64,8 +69,9 @@ public class MainActivity extends Activity implements View.OnClickListener
 	public void unstitch() {
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
-			UnstitchTGA.unstitchTGA(new File("/sdcard/terrain-atlas.tga"), new File("/sdcard/terrain.meta"),
-				new File("/sdcard/winprogress/terrainout"), myNameMap);
+			UnstitchTGA.unstitchTGA(new File(getWorkingFolder(), "input/terrain-atlas.tga"),
+				UnstitchTGA.readMap(getResources().openRawResource(R.raw.mojang_terrain)),
+				new File(getWorkingFolder(), "unstitch/blocks"), myNameMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 			reportError(e);
@@ -75,9 +81,9 @@ public class MainActivity extends Activity implements View.OnClickListener
 	public void stitchItems() {
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
-			List<String> missingFiles = RestitchTGA.restitchPNG(new File("/sdcard/winprogress/itemout"), 
-				UnstitchTGA.readMap(new File("/sdcard/items.meta")),
-				new File("/sdcard/winprogress/items-opaque.png"), myNameMap);
+			List<String> missingFiles = RestitchTGA.restitchPNG(new File(getWorkingFolder(), "unstitch/items"), 
+				UnstitchTGA.readMap(getResources().openRawResource(R.raw.mojang_items)),
+				new File(getWorkingFolder(), "output/items-opaque.png"), myNameMap);
 			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n"
 				+ missingFiles.toString()).show();
 			PrintWriter pw = new PrintWriter(new File("/sdcard/winprogress/items_rem.txt"));
@@ -92,8 +98,9 @@ public class MainActivity extends Activity implements View.OnClickListener
 	public void unstitchItems() {
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
-			UnstitchTGA.unstitchPNG(new File("/sdcard/items-opaque.png"), UnstitchTGA.readMap(new File("/sdcard/items.meta")),
-				new File("/sdcard/winprogress/itemout"), myNameMap);
+			UnstitchTGA.unstitchPNG(new File(getWorkingFolder(), "input/items-opaque.png"), 
+				UnstitchTGA.readMap(getResources().openRawResource(R.raw.mojang_items)),
+				new File(getWorkingFolder(), "unstitch/items"), myNameMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 			reportError(e);
@@ -106,9 +113,9 @@ public class MainActivity extends Activity implements View.OnClickListener
 				R.raw.mojang_unstitcher_blocks));
 			List<UnstitchLegacy.LegacyCoord> itemsCoords = UnstitchLegacy.loadLegacyCoord(getResources().openRawResource(
 				R.raw.mojang_unstitcher_items));
-			File outputFolderTopLevel = new File("/sdcard/winprogress/legacyout");
+			File outputFolderTopLevel = new File(getWorkingFolder(), "unstitch");
 			File blocksOutput = new File(outputFolderTopLevel, "blocks");
-			File inputFolder = new File("/sdcard");
+			File inputFolder = new File(getWorkingFolder(), "input");
 			UnstitchLegacy.unstitchLegacy(new File(inputFolder, "terrain.png"), blocksCoords, blocksOutput);
 			File itemsOutput = new File(outputFolderTopLevel, "items");
 			UnstitchLegacy.unstitchLegacy(new File(inputFolder, "items.png"), itemsCoords, itemsOutput);
