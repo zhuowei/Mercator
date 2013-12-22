@@ -38,9 +38,8 @@ public final class UnstitchTGA {
 		JSONArray map = readMap(mapFile);
 		unstitchTGA(inputFile, map, outputDir, nameMap);
 	}
-	public static void unstitchTGA(File inputFile, JSONArray map, File outputDir, Map<String, String> nameMap)
-		throws IOException, JSONException {
-		outputDir.mkdirs();
+
+	public static Bitmap readTGA(File inputFile) throws IOException {
 		FileInputStream fis = new FileInputStream(inputFile);
 		TGAImage img = TGAImage.read(fis);
 		Bitmap bmp = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.ARGB_8888);
@@ -54,6 +53,13 @@ public final class UnstitchTGA {
 		outArr = null;
 		img = null;
 		myIntBuffer = null;
+		return bmp;
+	}
+
+	public static void unstitchTGA(File inputFile, JSONArray map, File outputDir, Map<String, String> nameMap)
+		throws IOException, JSONException {
+		outputDir.mkdirs();
+		Bitmap bmp = readTGA(inputFile);
 		unstitch(bmp, map, outputDir, nameMap);
 	}
 

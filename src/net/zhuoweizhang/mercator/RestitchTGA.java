@@ -34,7 +34,7 @@ public final class RestitchTGA {
 		}
 		return missingFiles;
 	}
-	private static void writeTGA(Bitmap outBmp, File outputFile) throws IOException {
+	public static void writeTGA(Bitmap outBmp, File outputFile) throws IOException {
 		ByteBuffer data = ByteBuffer.allocate(outBmp.getWidth() * outBmp.getHeight() * 4);
 		outBmp.copyPixelsToBuffer(data);
 		invertBuffer(data, outBmp.getWidth(), outBmp.getHeight());

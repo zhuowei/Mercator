@@ -54,6 +54,16 @@
     android:layout_height="wrap_content"
     android:text="Unstitch items-opaque.png"/>
 
+<Button android:id="@+id/main_tga_to_png_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/main_menu_tga_to_png"/>
+
+<Button android:id="@+id/main_png_to_tga_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/main_menu_png_to_tga"/>
+
 </LinearLayout>
 </ScrollView>
 

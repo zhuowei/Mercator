@@ -2,18 +2,26 @@ package net.zhuoweizhang.mercator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import java.io.*;
 import java.util.*;
 import android.view.View;
 import android.widget.*;
+
+import com.ipaulpro.afilechooser.FileChooserActivity;
+import com.ipaulpro.afilechooser.utils.FileUtils;
 public class MainActivity extends Activity implements View.OnClickListener
 {
 
+	private static final int REQUEST_SELECT_TGA = 0x1000;
+	private static final int REQUEST_SELECT_PNG = 0x1001;
 	private Button stitchButton, unstitchButton;
 	private Button stitchItemsButton, unstitchItemsButton;
 	private Button unstitchLegacyButton;
+	private Button tgaToPngButton, pngToTgaButton;
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -30,6 +38,10 @@ public class MainActivity extends Activity implements View.OnClickListener
 		unstitchItemsButton.setOnClickListener(this);
 		unstitchLegacyButton = (Button) findViewById(R.id.main_unstitch_legacy_button);
 		unstitchLegacyButton.setOnClickListener(this);
+		tgaToPngButton = (Button) findViewById(R.id.main_tga_to_png_button);
+		tgaToPngButton.setOnClickListener(this);
+		pngToTgaButton = (Button) findViewById(R.id.main_png_to_tga_button);
+		pngToTgaButton.setOnClickListener(this);
 	}
 	public void onClick(View v) {
 		if (v == stitchButton) {
@@ -42,6 +54,44 @@ public class MainActivity extends Activity implements View.OnClickListener
 			unstitchItems();
 		} else if (v == unstitchLegacyButton) {
 			unstitchLegacy();
+		} else if (v == tgaToPngButton) {
+			tgaToPng();
+		} else if (v == pngToTgaButton) {
+			pngToTga();
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+			case REQUEST_SELECT_TGA:  
+				if (resultCode == RESULT_OK) {  
+					final Uri uri = data.getData();
+					File file = FileUtils.getFile(uri);
+					String newFileName = file.getName().substring(0, file.getName().length() - 3) + "png";
+					try {
+						ConvertTGA.tgaToPng(file, new File(file.getParentFile(), newFileName));
+					} catch (Exception e) {
+						e.printStackTrace();
+						reportError(e);
+					}
+
+				}
+				break;
+			case REQUEST_SELECT_PNG:  
+				if (resultCode == RESULT_OK) {  
+					final Uri uri = data.getData();
+					File file = FileUtils.getFile(uri);
+					String newFileName = file.getName().substring(0, file.getName().length() - 3) + "tga";
+					try {
+						ConvertTGA.pngToTga(file, new File(file.getParentFile(), newFileName));
+					} catch (Exception e) {
+						e.printStackTrace();
+						reportError(e);
+					}
+
+				}
+				break;
 		}
 	}
 
@@ -124,7 +174,20 @@ public class MainActivity extends Activity implements View.OnClickListener
 			reportError(e);
 		}
 	}
-			
+
+	protected void tgaToPng() {
+		Intent target = FileUtils.createGetContentIntent();
+		target.setType("image/x-targa");
+		target.setClass(this, FileChooserActivity.class);
+		startActivityForResult(target, REQUEST_SELECT_TGA);
+	}
+
+	protected void pngToTga() {
+		Intent target = FileUtils.createGetContentIntent();
+		target.setType("image/png");
+		target.setClass(this, FileChooserActivity.class);
+		startActivityForResult(target, REQUEST_SELECT_PNG);
+	}
 
 	private void reportError(final Throwable t) {
 		this.runOnUiThread(new Runnable() {

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mercator</string>
+    <string name="main_menu_tga_to_png">Convert TGA to PNG</string>
+    <string name="main_menu_png_to_tga">Convert PNG to TGA</string>
 </resources>
