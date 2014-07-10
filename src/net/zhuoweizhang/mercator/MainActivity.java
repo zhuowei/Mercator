@@ -103,7 +103,7 @@ public class MainActivity extends Activity implements View.OnClickListener
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
 			List<String> missingFiles = RestitchTGA.restitchTGA(new File(getWorkingFolder(), "unstitch/blocks"), 
-				UnstitchTGA.readMap(getResources().openRawResource(R.raw.mojang_terrain)),
+				UnstitchTGA.readMap(getResources().openRawResource(R.raw.terrain)),
 				new File(getWorkingFolder(), "output"), myNameMap);
 			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n"
 				+ missingFiles.toString()).show();
@@ -120,7 +120,7 @@ public class MainActivity extends Activity implements View.OnClickListener
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
 			UnstitchTGA.unstitchTGA(new File(getWorkingFolder(), "input/terrain-atlas.tga"),
-				UnstitchTGA.readMap(getResources().openRawResource(R.raw.mojang_terrain)),
+				UnstitchTGA.readMap(getResources().openRawResource(R.raw.terrain)),
 				new File(getWorkingFolder(), "unstitch/blocks"), myNameMap);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,7 +132,7 @@ public class MainActivity extends Activity implements View.OnClickListener
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
 			List<String> missingFiles = RestitchTGA.restitchPNG(new File(getWorkingFolder(), "unstitch/items"), 
-				UnstitchTGA.readMap(getResources().openRawResource(R.raw.mojang_items)),
+				UnstitchTGA.readMap(getResources().openRawResource(R.raw.items)),
 				new File(getWorkingFolder(), "output/items-opaque.png"), myNameMap);
 			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n"
 				+ missingFiles.toString()).show();
@@ -149,7 +149,7 @@ public class MainActivity extends Activity implements View.OnClickListener
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
 			UnstitchTGA.unstitchPNG(new File(getWorkingFolder(), "input/items-opaque.png"), 
-				UnstitchTGA.readMap(getResources().openRawResource(R.raw.mojang_items)),
+				UnstitchTGA.readMap(getResources().openRawResource(R.raw.items)),
 				new File(getWorkingFolder(), "unstitch/items"), myNameMap);
 		} catch (Exception e) {
 			e.printStackTrace();

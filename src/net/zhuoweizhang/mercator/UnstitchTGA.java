@@ -84,28 +84,23 @@ public final class UnstitchTGA {
 		//String name = nameMap.get(rawName);
 		//if (name == null) name = rawName;
 
-		JSONArray primaryTextureUV = iconInfo.getJSONArray("uv");
-		JSONArray secondaryTextures = iconInfo.getJSONArray("additonal_textures");
-		int secondaryLength = secondaryTextures.length();
+		JSONArray textures = iconInfo.getJSONArray("uvs");
+		int texturesLength = textures.length();
 
-		String fileName = getFilename(rawName, 0, secondaryLength, nameMap);
-		File outputFile = new File(outputDir, fileName + ".png");
-		copyOneIcon(bmp, primaryTextureUV, outputFile);
-
-		for (int i = 0; i < secondaryLength; i++) {
-			JSONArray secondaryTextureUV = secondaryTextures.getJSONArray(i);
-			fileName = getFilename(rawName, i + 1, secondaryLength, nameMap);
-			outputFile = new File(outputDir, fileName + ".png");
-			copyOneIcon(bmp, secondaryTextureUV, outputFile);
+		for (int i = 0; i < texturesLength; i++) {
+			JSONArray textureUV = textures.getJSONArray(i);
+			String fileName = getFilename(rawName, i, texturesLength, nameMap);
+			File outputFile = new File(outputDir, fileName + ".png");
+			copyOneIcon(bmp, textureUV, outputFile);
 		}
 
 	}
 
-	public static String getFilename(String blockName, int number, int secondaryLength, Map<String, String> nameMap) {
+	public static String getFilename(String blockName, int number, int texturesLength, Map<String, String> nameMap) {
 		if (blockName.length() > 2 && blockName.substring(blockName.length() - 2).equals("_x")) {
 			blockName = blockName.substring(0, blockName.length() - 2);
 		}
-		String fileName = blockName + (secondaryLength != 0? "_" + number: "");
+		String fileName = blockName + (number != 0? "_" + number: "");
 		String altFileName = nameMap.get(fileName);
 		if (altFileName != null) fileName = altFileName;
 		return fileName;
@@ -137,6 +132,9 @@ public final class UnstitchTGA {
 			if (curLine.length() < 1 || curLine.charAt(0) == '#') continue;
 			String[] parts = curLine.split(",");
 			if (parts.length != 2) continue;
+			if (parts[0].endsWith("_0")) {
+				parts[0] = parts[0].substring(0, parts[0].length() - 2);
+			}
 			if (retval.containsKey(parts[0]))
 				throw new RuntimeException("Duplicate in name map: " + curLine);
 			retval.put(parts[0], parts[1]);

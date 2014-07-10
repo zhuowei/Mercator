@@ -4,9 +4,25 @@
 # These are done by hand (less confusion)
 # grass
 grass_0,grass_top
-grass_1,grass_side
-grass_2,grass_side_snowed
-grass_3,grass_colored
+grass_1,grass_side_snowed
+grass_2,grass_colored
+grass_3,grass_side
+grass_4,grass_side
+grass_5,grass_side
+grass_6,grass_side
+grass_7,grass_side
+grass_8,grass_side
+grass_9,grass_side
+grass_10,grass_side
+grass_11,grass_side
+grass_12,grass_side
+grass_13,grass_side
+grass_14,grass_side
+grass_15,grass_side
+grass_16,grass_side
+grass_17,grass_side
+grass_18,grass_side
+
 # stone bricks
 stonebrick_0,stonebrick
 stonebrick_1,stonebrick_mossy

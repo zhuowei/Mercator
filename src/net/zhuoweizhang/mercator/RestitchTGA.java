@@ -105,19 +105,14 @@ public final class RestitchTGA {
 		//String name = nameMap.get(rawName);
 		//if (name == null) name = rawName;
 
-		JSONArray primaryTextureUV = iconInfo.getJSONArray("uv");
-		JSONArray secondaryTextures = iconInfo.getJSONArray("additonal_textures");
-		int secondaryLength = secondaryTextures.length();
+		JSONArray textures = iconInfo.getJSONArray("uvs");
+		int texturesLength = textures.length();
 
-		String fileName = getFilename(rawName, 0, secondaryLength, nameMap);
-		File inputFile = new File(inputDir, fileName + ".png");
-		stitchOneIcon(inputFile, primaryTextureUV, outBmp, missingFiles);
-
-		for (int i = 0; i < secondaryLength; i++) {
-			JSONArray secondaryTextureUV = secondaryTextures.getJSONArray(i);
-			fileName = getFilename(rawName, i + 1, secondaryLength, nameMap);
-			inputFile = new File(inputDir, fileName + ".png");
-			stitchOneIcon(inputFile, secondaryTextureUV, outBmp, missingFiles);
+		for (int i = 0; i < texturesLength; i++) {
+			JSONArray textureUV = textures.getJSONArray(i);
+			String fileName = getFilename(rawName, i, texturesLength, nameMap);
+			File inputFile = new File(inputDir, fileName + ".png");
+			stitchOneIcon(inputFile, textureUV, outBmp, missingFiles);
 		}
 	}
 
@@ -156,7 +151,7 @@ public final class RestitchTGA {
 	}
 
 	private static Bitmap makeBmp(JSONObject iconInfo) throws JSONException {
-		JSONArray uv = iconInfo.getJSONArray("uv");
+		JSONArray uv = iconInfo.getJSONArray("uvs").getJSONArray(0);
 		int imgWidth = (int) uv.getDouble(4);
 		int imgHeight = (int) uv.getDouble(5);
 		return Bitmap.createBitmap(imgWidth, imgHeight, Bitmap.Config.ARGB_8888);
