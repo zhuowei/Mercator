@@ -134,6 +134,16 @@ pumpkin_stem_0,melon_stem_disconnected
 pumpkin_stem_1,melon_stem_connected
 hayblock_0,hay_block_top
 hayblock_1,hay_block_side
+destroy_0,destroy_stage_0
+destroy_1,destroy_stage_1
+destroy_2,destroy_stage_2
+destroy_3,destroy_stage_3
+destroy_4,destroy_stage_4
+destroy_5,destroy_stage_5
+destroy_6,destroy_stage_6
+destroy_7,destroy_stage_7
+destroy_8,destroy_stage_8
+destroy_9,destroy_stage_9
 
 ## Items
 # These are machine generated (which means there will be mistakes)

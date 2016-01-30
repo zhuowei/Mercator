@@ -1,1 +1,1 @@
-python identify.py items_rem.txt itemsout textures/items/
+python identify.py - itemsout textures/items/

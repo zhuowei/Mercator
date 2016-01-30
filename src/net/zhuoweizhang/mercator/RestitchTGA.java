@@ -36,11 +36,11 @@ public final class RestitchTGA {
 	}
 	public static void writeTGA(Bitmap outBmp, File outputFile) throws IOException {
 		ByteBuffer data = ByteBuffer.allocate(outBmp.getWidth() * outBmp.getHeight() * 4);
-		outBmp.copyPixelsToBuffer(data);
+		int[] tempArr = new int[outBmp.getWidth() * outBmp.getHeight()];
+		outBmp.getPixels(tempArr, 0, outBmp.getWidth(), 0, 0, outBmp.getWidth(), outBmp.getHeight());
+		data.order(ByteOrder.LITTLE_ENDIAN).asIntBuffer().put(tempArr);
+		tempArr = null;
 		invertBuffer(data, outBmp.getWidth(), outBmp.getHeight());
-		//RGB -> BGR
-		byte[] dataBytes = data.array();
-		TGAImage.swapBGR(dataBytes, outBmp.getWidth() * 4, outBmp.getHeight(), 4);
 		TGAImage tgaImage = TGAImage.createFromData(outBmp.getWidth(), outBmp.getHeight(),
 			true, false, data);
 		tgaImage.write(outputFile);
@@ -122,9 +122,10 @@ public final class RestitchTGA {
 			missingFiles.add(inputFile.getName());
 			return;
 		}
-		//BitmapFactory.Options opts = new BitmapFactory.Options();
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		//ConvertTGA.setBitmapOptionsPremultplied(opts, false);
 		//opts.inBitmap = cachedIconBitmap;
-		Bitmap bmp = BitmapFactory.decodeFile(inputFile.getAbsolutePath());
+		Bitmap bmp = BitmapFactory.decodeFile(inputFile.getAbsolutePath(), opts);
 		if (bmp == null) {
 			missingFiles.add(inputFile.getName());
 			return;
@@ -136,10 +137,10 @@ public final class RestitchTGA {
 		double y2 = uv.getDouble(3);
 		double imgWidth = uv.getDouble(4);
 		double imgHeight = uv.getDouble(5);
-		int sx = (int) (imgWidth * x1 + 0.5);
-		int sy = (int) (imgHeight * y1 + 0.5);
-		int width = (int) (imgWidth * x2 + 0.5) - sx;
-		int height = (int) (imgHeight * y2 + 0.5) - sy;
+		int sx = (int) x1;
+		int sy = (int) y1;
+		int width = (int) x2 - sx;
+		int height = (int) y2 - sy;
 
 		int supposedArrayLength = width * height;
 		if (cachedColorsArray == null || cachedColorsArray.length != supposedArrayLength) {

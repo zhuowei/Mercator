@@ -29,6 +29,9 @@ def processImages(mylist, mytexfolder, comptexfolder):
 			continue
 		mytex = Image.open(mytexfolder + "/" + i)
 		compresult = compare(mytex, comp_images)
+		if compresult == None:
+			print("i", i)
+			continue
 		resultslist.append((i, compresult))
 	return resultslist
 
@@ -45,10 +48,15 @@ def compare(mytex, comp_images):
 				myerr += (mypix[i] - comppix[i]) ** 2
 		ranking.append((myerr, img))
 	ranking.sort()
+	if ranking[0][0] > 5*5:
+		print("error too large", ranking[0][0], ranking[0][1][0])
+		return None
 	return ranking[0][1][0]
 
 
 def loadImageList(myfilename):
+	if myfilename == "-":
+		return os.listdir(sys.argv[2])
 	mylist = []
 	with open(myfilename, "r") as myfile:
 		for l in myfile:

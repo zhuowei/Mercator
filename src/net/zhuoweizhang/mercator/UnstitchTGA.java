@@ -113,10 +113,10 @@ public final class UnstitchTGA {
 		double y2 = uv.getDouble(3);
 		double imgWidth = uv.getDouble(4);
 		double imgHeight = uv.getDouble(5);
-		int sx = (int) (imgWidth * x1 + 0.5);
-		int sy = (int) (imgHeight * y1 + 0.5);
-		int width = (int) (imgWidth * x2 + 0.5) - sx;
-		int height = (int) (imgHeight * y2 + 0.5) - sy;
+		int sx = (int) x1;
+		int sy = (int) y1;
+		int width = (int) x2 - sx;
+		int height = (int) y2 - sy;
 		Bitmap out = Bitmap.createBitmap(bmp, sx, sy, width, height);
 		FileOutputStream fos = new FileOutputStream(output);
 		out.compress(Bitmap.CompressFormat.PNG, 100, fos);

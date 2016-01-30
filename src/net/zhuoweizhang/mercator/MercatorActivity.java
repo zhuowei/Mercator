@@ -13,7 +13,7 @@ import android.widget.*;
 
 import com.ipaulpro.afilechooser.FileChooserActivity;
 import com.ipaulpro.afilechooser.utils.FileUtils;
-public class MainActivity extends Activity implements View.OnClickListener
+public class MercatorActivity extends Activity implements View.OnClickListener
 {
 
 	private static final int REQUEST_SELECT_TGA = 0x1000;
@@ -107,7 +107,7 @@ public class MainActivity extends Activity implements View.OnClickListener
 				new File(getWorkingFolder(), "output"), myNameMap);
 			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n"
 				+ missingFiles.toString()).show();
-			PrintWriter pw = new PrintWriter(new File("/sdcard/winprogress/terrain_rem.txt"));
+			PrintWriter pw = new PrintWriter(new File(getWorkingFolder(), "terrain_rem.txt"));
 			pw.println(missingFiles.toString());
 			pw.close();
 		} catch (Exception e) {
@@ -131,12 +131,12 @@ public class MainActivity extends Activity implements View.OnClickListener
 	public void stitchItems() {
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
-			List<String> missingFiles = RestitchTGA.restitchPNG(new File(getWorkingFolder(), "unstitch/items"), 
+			List<String> missingFiles = RestitchTGA.restitchTGA(new File(getWorkingFolder(), "unstitch/items"),
 				UnstitchTGA.readMap(getResources().openRawResource(R.raw.items)),
-				new File(getWorkingFolder(), "output/items-opaque.png"), myNameMap);
+				new File(getWorkingFolder(), "output/items-opaque.tga"), myNameMap);
 			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n"
 				+ missingFiles.toString()).show();
-			PrintWriter pw = new PrintWriter(new File("/sdcard/winprogress/items_rem.txt"));
+			PrintWriter pw = new PrintWriter(new File(getWorkingFolder(), "items_rem.txt"));
 			pw.println(missingFiles.toString());
 			pw.close();
 		} catch (Exception e) {
@@ -148,7 +148,7 @@ public class MainActivity extends Activity implements View.OnClickListener
 	public void unstitchItems() {
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
-			UnstitchTGA.unstitchPNG(new File(getWorkingFolder(), "input/items-opaque.png"), 
+			UnstitchTGA.unstitchTGA(new File(getWorkingFolder(), "input/items-opaque.tga"),
 				UnstitchTGA.readMap(getResources().openRawResource(R.raw.items)),
 				new File(getWorkingFolder(), "unstitch/items"), myNameMap);
 		} catch (Exception e) {
@@ -195,7 +195,7 @@ public class MainActivity extends Activity implements View.OnClickListener
 				StringWriter strWriter = new StringWriter();
 				PrintWriter pWriter = new PrintWriter(strWriter);
 				t.printStackTrace(pWriter);
-				new AlertDialog.Builder(MainActivity.this).setTitle("Oh nose everything broke").setMessage(strWriter.toString()).
+				new AlertDialog.Builder(MercatorActivity.this).setTitle("Oh nose everything broke").setMessage(strWriter.toString()).
 					setPositiveButton(android.R.string.ok, null).
 					show();
 			}

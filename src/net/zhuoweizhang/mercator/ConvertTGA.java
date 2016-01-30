@@ -1,6 +1,7 @@
 package net.zhuoweizhang.mercator;
 
 import java.io.*;
+import android.os.Build;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -16,7 +17,19 @@ public final class ConvertTGA {
 	}
 
 	public static void pngToTga(File input, File output) throws IOException {
-		Bitmap inBmp = BitmapFactory.decodeFile(input.getAbsolutePath());
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		//setBitmapOptionsPremultplied(opts, false);
+		Bitmap inBmp = BitmapFactory.decodeFile(input.getAbsolutePath(), opts);
 		RestitchTGA.writeTGA(inBmp, output);
 	}
+/*	public static boolean setBitmapOptionsPremultiplied(BitmapFactory.Options opts, boolean value) {
+		try {
+			Field f = opts.getClass().getField("inPremultiplied");
+			f.setValue(opts, value);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+*/
 }

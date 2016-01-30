@@ -38,21 +38,21 @@
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Takes /sdcard/Mercator/unstitch/items, outputs to /sdcard/Mercator/output/items-opaque.png"
+    android:text="Takes /sdcard/Mercator/unstitch/items, outputs to /sdcard/Mercator/output/items-opaque.tga"
     />
 <Button android:id="@+id/main_stitch_items_button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Stitch items-opaque.png"/>
+    android:text="Stitch items-opaque.tga"/>
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Takes /sdcard/Mercator/input/items-opaque.png, output to /sdcard/Mercator/unstitch/items"
+    android:text="Takes /sdcard/Mercator/input/items-opaque.tga, output to /sdcard/Mercator/unstitch/items"
     />
 <Button android:id="@+id/main_unstitch_items_button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Unstitch items-opaque.png"/>
+    android:text="Unstitch items-opaque.tga"/>
 
 <Button android:id="@+id/main_tga_to_png_button"
     android:layout_width="match_parent"
