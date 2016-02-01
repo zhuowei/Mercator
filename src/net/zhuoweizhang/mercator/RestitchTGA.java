@@ -180,6 +180,7 @@ public final class RestitchTGA {
 	}
 
 	private static RestitchGen[] restitchGens = {
-		new SpawnEggGen()
+		new SpawnEggGen(),
+		new PotionGen()
 	};
 }
