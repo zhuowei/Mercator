@@ -8,6 +8,8 @@ import java.nio.charset.*;
 import org.json.*;
 import java.util.*;
 
+import net.zhuoweizhang.mercator.restitchgen.*;
+
 import static net.zhuoweizhang.mercator.UnstitchTGA.getFilename;
 
 public final class RestitchTGA {
@@ -124,16 +126,27 @@ public final class RestitchTGA {
 		}
 	}
 
-	private static void stitchOneIcon(File inputFile, JSONArray uv, Bitmap outBmp, List<String> missingFiles)
-		throws IOException, JSONException {
-		if (!inputFile.exists()) {
-			missingFiles.add(inputFile.getName());
-			return;
+	private static Bitmap getStitchInputBitmap(File inputFile) throws IOException {
+		boolean nofile = !inputFile.exists();
+		String name = inputFile.getName();
+		File parent = inputFile.getParentFile();
+		for (RestitchGen gen: restitchGens) {
+			boolean force = nofile || gen.forceGen(name, parent);
+			if (!force) continue;
+			Bitmap b = gen.restitchGen(name, parent);
+			if (b != null) return b;
+		}
+		if (nofile) {
+			return null;
 		}
 		BitmapFactory.Options opts = new BitmapFactory.Options();
-		//ConvertTGA.setBitmapOptionsPremultplied(opts, false);
-		//opts.inBitmap = cachedIconBitmap;
 		Bitmap bmp = BitmapFactory.decodeFile(inputFile.getAbsolutePath(), opts);
+		return bmp;
+	}
+
+	private static void stitchOneIcon(File inputFile, JSONArray uv, Bitmap outBmp, List<String> missingFiles)
+		throws IOException, JSONException {
+		Bitmap bmp = getStitchInputBitmap(inputFile);
 		if (bmp == null) {
 			missingFiles.add(inputFile.getName());
 			return;
@@ -165,4 +178,8 @@ public final class RestitchTGA {
 		int imgHeight = (int) uv.getDouble(5);
 		return Bitmap.createBitmap(imgWidth, imgHeight, Bitmap.Config.ARGB_8888);
 	}
+
+	private static RestitchGen[] restitchGens = {
+		new SpawnEggGen()
+	};
 }
