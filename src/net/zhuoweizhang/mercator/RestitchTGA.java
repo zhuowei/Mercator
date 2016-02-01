@@ -46,6 +46,14 @@ public final class RestitchTGA {
 		tgaImage.write(outputFile);
 	}
 
+	public static List<String> restitchOneTGA(File inputDir, JSONArray map, File outputFile, Map<String, String> nameMap)
+		throws IOException, JSONException {
+		List<String> missingFiles = new ArrayList<String>();
+		Bitmap outBmp = restitch(inputDir, map, nameMap, missingFiles);
+		writeTGA(outBmp, outputFile);
+		return missingFiles;
+	}
+
 	/**
 	 * @returns A list of missing files that should've been present in the PNG file
 	 */

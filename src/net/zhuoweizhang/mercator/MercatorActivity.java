@@ -42,6 +42,7 @@ public class MercatorActivity extends Activity implements View.OnClickListener
 		tgaToPngButton.setOnClickListener(this);
 		pngToTgaButton = (Button) findViewById(R.id.main_png_to_tga_button);
 		pngToTgaButton.setOnClickListener(this);
+		createWorkingFolder();
 	}
 	public void onClick(View v) {
 		if (v == stitchButton) {
@@ -131,7 +132,7 @@ public class MercatorActivity extends Activity implements View.OnClickListener
 	public void stitchItems() {
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping_items));
-			List<String> missingFiles = RestitchTGA.restitchTGA(new File(getWorkingFolder(), "unstitch/items"),
+			List<String> missingFiles = RestitchTGA.restitchOneTGA(new File(getWorkingFolder(), "unstitch/items"),
 				UnstitchTGA.readMap(getResources().openRawResource(R.raw.items)),
 				new File(getWorkingFolder(), "output/items-opaque.tga"), myNameMap);
 			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n"
@@ -187,6 +188,17 @@ public class MercatorActivity extends Activity implements View.OnClickListener
 		target.setType("image/png");
 		target.setClass(this, FileChooserActivity.class);
 		startActivityForResult(target, REQUEST_SELECT_PNG);
+	}
+
+	private void createWorkingFolder() {
+		File workingFolder = getWorkingFolder();
+		workingFolder.mkdirs();
+		try {
+			new File(workingFolder, ".nomedia").createNewFile();
+		} catch (IOException ie) {
+			ie.printStackTrace();
+			reportError(ie);
+		}
 	}
 
 	private void reportError(final Throwable t) {
