@@ -130,7 +130,7 @@ public class MercatorActivity extends Activity implements View.OnClickListener
 
 	public void stitchItems() {
 		try {
-			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
+			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping_items));
 			List<String> missingFiles = RestitchTGA.restitchTGA(new File(getWorkingFolder(), "unstitch/items"),
 				UnstitchTGA.readMap(getResources().openRawResource(R.raw.items)),
 				new File(getWorkingFolder(), "output/items-opaque.tga"), myNameMap);
@@ -147,7 +147,7 @@ public class MercatorActivity extends Activity implements View.OnClickListener
 
 	public void unstitchItems() {
 		try {
-			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping));
+			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping_items));
 			UnstitchTGA.unstitchTGA(new File(getWorkingFolder(), "input/items-opaque.tga"),
 				UnstitchTGA.readMap(getResources().openRawResource(R.raw.items)),
 				new File(getWorkingFolder(), "unstitch/items"), myNameMap);

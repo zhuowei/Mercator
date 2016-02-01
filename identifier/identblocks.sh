@@ -1,1 +1,1 @@
-python identify.py terrain_rem.txt terrainout textures/blocks/
+python identify.py - terrainout textures/blocks/

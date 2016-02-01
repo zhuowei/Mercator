@@ -18,6 +18,7 @@ def processImages(mylist, mytexfolder, comptexfolder):
 			continue
 		
 		comp = Image.open(comptexfolder + "/" + comptex)
+		comp = comp.convert(mode="RGBA")
 		comp_images.append((comptex, comp, list(comp.getdata())))
 
 	for i in mylist:
@@ -45,7 +46,7 @@ def compare(mytex, comp_images):
 			mypix = mydata[pixelindex]
 			comppix = data[pixelindex]
 			for i in xrange(3):
-				myerr += (mypix[i] - comppix[i]) ** 2
+				myerr += (mypix[i]*mypix[3] - comppix[i]*comppix[3]) ** 2
 		ranking.append((myerr, img))
 	ranking.sort()
 	if ranking[0][0] > 5*5:
