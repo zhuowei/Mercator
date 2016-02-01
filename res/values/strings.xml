@@ -3,4 +3,5 @@
     <string name="app_name">Mercator</string>
     <string name="main_menu_tga_to_png">Convert TGA to PNG</string>
     <string name="main_menu_png_to_tga">Convert PNG to TGA</string>
+    <string name="storage_permission_required">External storage permission is required to use this application.</string>
 </resources>
