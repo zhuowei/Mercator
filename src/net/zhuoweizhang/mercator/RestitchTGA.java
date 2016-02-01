@@ -93,12 +93,13 @@ public final class RestitchTGA {
 		throws IOException, JSONException {
 		Bitmap outBmp = null;
 		int arrayLength = map.length();
+		int scaleFactor = getScaleFactor(inputDir);
 		for (int i = 0; i < arrayLength; i++) {
 			JSONObject iconInfo = map.getJSONObject(i);
 			if (outBmp == null) {
-				outBmp = makeBmp(iconInfo);
+				outBmp = makeBmp(iconInfo, scaleFactor);
 			}
-			stitchOneItem(inputDir, iconInfo, outBmp, nameMap, missingFiles);
+			stitchOneItem(inputDir, iconInfo, outBmp, nameMap, missingFiles, scaleFactor);
 		}
 
 		//if (cachedIconBitmap != null) {
@@ -110,7 +111,7 @@ public final class RestitchTGA {
 	}
 
 	private static void stitchOneItem(File inputDir, JSONObject iconInfo, Bitmap outBmp, Map<String, String> nameMap,
-		List<String> missingFiles) throws IOException, JSONException {
+		List<String> missingFiles, int scaleFactor) throws IOException, JSONException {
 		String rawName = iconInfo.getString("name");
 		//String name = nameMap.get(rawName);
 		//if (name == null) name = rawName;
@@ -122,7 +123,7 @@ public final class RestitchTGA {
 			JSONArray textureUV = textures.getJSONArray(i);
 			String fileName = getFilename(rawName, i, texturesLength, nameMap);
 			File inputFile = new File(inputDir, fileName + ".png");
-			stitchOneIcon(inputFile, textureUV, outBmp, missingFiles);
+			stitchOneIcon(inputFile, textureUV, outBmp, missingFiles, scaleFactor);
 		}
 	}
 
@@ -144,7 +145,7 @@ public final class RestitchTGA {
 		return bmp;
 	}
 
-	private static void stitchOneIcon(File inputFile, JSONArray uv, Bitmap outBmp, List<String> missingFiles)
+	private static void stitchOneIcon(File inputFile, JSONArray uv, Bitmap outBmp, List<String> missingFiles, int scaleFactor)
 		throws IOException, JSONException {
 		Bitmap bmp = getStitchInputBitmap(inputFile);
 		if (bmp == null) {
@@ -162,6 +163,10 @@ public final class RestitchTGA {
 		int sy = (int) y1;
 		int width = (int) x2 - sx;
 		int height = (int) y2 - sy;
+		sx *= scaleFactor; sy *= scaleFactor; width *= scaleFactor; height *= scaleFactor;
+		// FIXME: scale smaller pictures
+		width = Math.min(width, bmp.getWidth()); height = Math.min(height, bmp.getHeight());
+		//System.out.println("sx " + sx + " sy " + sy + " width " + width + " height " + height);
 
 		int supposedArrayLength = width * height;
 		if (cachedColorsArray == null || cachedColorsArray.length != supposedArrayLength) {
@@ -172,11 +177,22 @@ public final class RestitchTGA {
 		//cachedIconBitmap = bmp;
 	}
 
-	private static Bitmap makeBmp(JSONObject iconInfo) throws JSONException {
+	private static Bitmap makeBmp(JSONObject iconInfo, int scaleFactor) throws JSONException {
 		JSONArray uv = iconInfo.getJSONArray("uvs").getJSONArray(0);
 		int imgWidth = (int) uv.getDouble(4);
 		int imgHeight = (int) uv.getDouble(5);
-		return Bitmap.createBitmap(imgWidth, imgHeight, Bitmap.Config.ARGB_8888);
+		return Bitmap.createBitmap(imgWidth*scaleFactor, imgHeight*scaleFactor, Bitmap.Config.ARGB_8888);
+	}
+
+	private static int getScaleFactor(File inputDir) {
+		File sizingFile = new File(inputDir, "dirt.png");
+		if (!sizingFile.exists()) {
+			sizingFile = new File(inputDir, "apple.png");
+		}
+		if (!sizingFile.exists()) return 1;
+		Bitmap bmp = BitmapFactory.decodeFile(sizingFile.getAbsolutePath());
+		if (bmp == null) return 1;
+		return bmp.getWidth() / 16;
 	}
 
 	private static RestitchGen[] restitchGens = {
