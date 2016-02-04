@@ -43,20 +43,24 @@ public class SpawnEggGen extends RestitchGen {
 		return retval;
 	}
 
+	public static int s(int a) {
+		return a > 255? 255: a;
+	}
+
 	public static int mul(int a, int b) {
-		int bb = ((a & 0xff) * (b & 0xff))/0xff & 0xff;
-		int g = (((a >> 8) & 0xff) * ((b >> 8) & 0xff))/0xff & 0xff;
-		int r = (((a >> 16) & 0xff) * ((b >> 16) & 0xff))/0xff & 0xff;
+		int bb = s( ((a & 0xff) * (b & 0xff))/0xff );
+		int g = s( (((a >> 8) & 0xff) * ((b >> 8) & 0xff))/0xff );
+		int r = s( (((a >> 16) & 0xff) * ((b >> 16) & 0xff))/0xff );
 		return r << 16 | g << 8 | bb << 0 | (a & 0xff000000);
 	}
 
 	public static int mix(int a, int b) {
 		int ba = (b >> 24 & 0xff);
-		int bb = ((a & 0xff) + (b & 0xff)*ba/0xff) & 0xff;
-		int g = (((a >> 8) & 0xff) + ((b >> 8) & 0xff)*ba/0xff) & 0xff;
-		int r = (((a >> 16) & 0xff) + ((b >> 16) & 0xff)*ba/0xff) & 0xff;
+		int bb = s( ((a & 0xff) + (b & 0xff)*ba/0xff) );
+		int g = s( (((a >> 8) & 0xff) + ((b >> 8) & 0xff)*ba/0xff) );
+		int r = s( (((a >> 16) & 0xff) + ((b >> 16) & 0xff)*ba/0xff) );
 		int aa = (a >> 24 & 0xff);
-		int aaa = (aa + ba*(0xff-aa)/0xff)&0xff;
+		int aaa = s( (aa + ba*(0xff-aa)/0xff) );
 		return r << 16 | g << 8 | bb << 0 | aaa << 24;
 	}
 
