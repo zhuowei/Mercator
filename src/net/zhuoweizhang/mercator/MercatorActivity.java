@@ -11,6 +11,8 @@ import java.util.*;
 import android.view.View;
 import android.widget.*;
 
+import org.json.JSONArray;
+
 import com.ipaulpro.afilechooser.FileChooserActivity;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 public class MercatorActivity extends Activity implements View.OnClickListener
@@ -132,9 +134,13 @@ public class MercatorActivity extends Activity implements View.OnClickListener
 	public void stitchItems() {
 		try {
 			Map<String, String> myNameMap = UnstitchTGA.loadNameMap(getResources().openRawResource(R.raw.mapping_items));
-			List<String> missingFiles = RestitchTGA.restitchOneTGA(new File(getWorkingFolder(), "unstitch/items"),
-				UnstitchTGA.readMap(getResources().openRawResource(R.raw.items)),
+			File inputFolder = new File(getWorkingFolder(), "unstitch/items");
+			JSONArray theMap = UnstitchTGA.readMap(getResources().openRawResource(R.raw.items));
+			RestitchTGA.stitchingItems = true;
+			List<String> missingFiles = RestitchTGA.restitchOneTGA(inputFolder, theMap,
 				new File(getWorkingFolder(), "output/items-opaque.tga"), myNameMap);
+			RestitchTGA.generateMeta(inputFolder, new File(getWorkingFolder(), "output/items.meta"), theMap);
+			RestitchTGA.stitchingItems = false;
 			new AlertDialog.Builder(this).setTitle("Restitching successful").setMessage("Successful, with these missing files: \n"
 				+ missingFiles.toString()).show();
 			PrintWriter pw = new PrintWriter(new File(getWorkingFolder(), "items_rem.txt"));

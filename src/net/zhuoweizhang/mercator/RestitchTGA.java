@@ -16,6 +16,7 @@ public final class RestitchTGA {
 
 	//private static Bitmap cachedIconBitmap;
 	private static int[] cachedColorsArray;
+	public static boolean stitchingItems = false;
 
 	private RestitchTGA() {}
 
@@ -107,6 +108,7 @@ public final class RestitchTGA {
 		//	cachedIconBitmap = null;
 		//}
 		cachedColorsArray = null;
+		if (stitchingItems && scaleFactor != 1) return pictureInPicture(outBmp, scaleFactor);
 		return outBmp;
 	}
 
@@ -166,6 +168,7 @@ public final class RestitchTGA {
 		sx *= scaleFactor; sy *= scaleFactor; width *= scaleFactor; height *= scaleFactor;
 		// FIXME: scale smaller pictures
 		width = Math.min(width, bmp.getWidth()); height = Math.min(height, bmp.getHeight());
+		if (scaleFactor != 1) sy = moveYIfNeeded(sx, sy, (int)imgWidth, (int)imgHeight, outBmp.getHeight());
 		//System.out.println("sx " + sx + " sy " + sy + " width " + width + " height " + height);
 
 		int supposedArrayLength = width * height;
@@ -193,6 +196,46 @@ public final class RestitchTGA {
 		Bitmap bmp = BitmapFactory.decodeFile(sizingFile.getAbsolutePath());
 		if (bmp == null) return 1;
 		return bmp.getWidth() / 16;
+	}
+
+	public static void generateMeta(File inputDir, File outputFile, JSONArray map) throws IOException, JSONException {
+		int arrayLength = map.length();
+		final int scaleFactor = getScaleFactor(inputDir);
+		for (int i = 0; scaleFactor != 1 && i < arrayLength; i++) {
+			JSONObject iconInfo = map.getJSONObject(i);
+			JSONArray uvs = iconInfo.getJSONArray("uvs");
+			int arrayLength2 = uvs.length();
+			for (int j = 0; j < arrayLength2; j++) {
+				JSONArray uv = uvs.getJSONArray(j);
+				int sx = (int) uv.getDouble(0);
+				int sy = (int) uv.getDouble(1);
+				int imgWidth = (int) uv.getDouble(4);
+				int imgHeight = (int) uv.getDouble(5);
+				int newy = moveYIfNeeded(sx*scaleFactor, sy*scaleFactor, imgWidth, imgHeight, imgHeight * scaleFactor)
+						/ scaleFactor;
+				if (newy == sy) continue;
+				uv.put(1, newy);
+				uv.put(3, newy + 16);
+			}
+		}
+		FileOutputStream fos = new FileOutputStream(outputFile);
+		fos.write(map.toString().getBytes("UTF-8"));
+		fos.close();
+	}
+
+	public static int moveYIfNeeded(int sx, int sy, int imgWidth, int imgHeight, int fullHeight) {
+		if (!stitchingItems) return sy;
+		//System.out.println("move y if needed " + sx + ":" + sy + ":" + imgWidth + ":" + imgHeight + ":" + fullHeight);
+		if (sy >= imgHeight || sx >= imgWidth) return sy;
+		return fullHeight - imgHeight + sy;
+	}
+
+	public static Bitmap pictureInPicture(Bitmap bmp, int scaleFactor) {
+		Bitmap tiny = Bitmap.createScaledBitmap(bmp, bmp.getWidth() / scaleFactor, bmp.getHeight() / scaleFactor, true);
+		int[] tinyPixels = new int[tiny.getWidth() * tiny.getHeight()];
+		tiny.getPixels(tinyPixels, 0, tiny.getWidth(), 0, 0, tiny.getWidth(), tiny.getHeight());
+		bmp.setPixels(tinyPixels, 0, tiny.getWidth(), 0, 0, tiny.getWidth(), tiny.getHeight());
+		return bmp;
 	}
 
 	private static RestitchGen[] restitchGens = {
