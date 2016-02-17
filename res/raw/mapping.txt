@@ -21,6 +21,24 @@ grass_16,grass_side
 grass_17,grass_side
 grass_18,grass_side
 
+leaves,leaves_oak
+leaves_1,leaves_spruce
+leaves_2,leaves_birch
+leaves_3,leaves_jungle
+leaves_4,leaves_oak
+leaves_5,leaves_spruce
+leaves_6,leaves_birch
+leaves_7,leaves_jungle
+leaves2,leaves_acacia
+leaves2_1,leaves_dark_oak
+
+leaves_opaque,leaves_oak_opaque
+leaves_opaque_1,leaves_spruce_opaque
+leaves_opaque_2,leaves_birch_opaque
+leaves_opaque_3,leaves_jungle_opaque
+leaves_opaque2,leaves_acacia_opaque
+leaves_opaque2_1,leaves_dark_oak_opaque
+
 
 # These are machine generated (which means there will be mistakes)
 anvil_top_damaged,anvil_top_damaged_0

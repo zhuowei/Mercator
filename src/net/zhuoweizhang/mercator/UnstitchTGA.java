@@ -135,8 +135,10 @@ public final class UnstitchTGA {
 			if (parts[0].endsWith("_0")) {
 				parts[0] = parts[0].substring(0, parts[0].length() - 2);
 			}
-			if (retval.containsKey(parts[0]))
-				throw new RuntimeException("Duplicate in name map: " + curLine);
+			if (retval.containsKey(parts[0])) {
+				System.out.println("Duplicate in name map: " + curLine);
+				continue;
+			}
 			retval.put(parts[0], parts[1]);
 		}
 		reader.close();
